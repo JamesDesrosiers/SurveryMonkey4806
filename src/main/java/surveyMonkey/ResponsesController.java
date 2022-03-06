@@ -19,8 +19,8 @@ public class ResponsesController {
     }
 
     @GetMapping("/get")
-    public Responses getResponse(@RequestParam String documentid) throws InterruptedException, ExecutionException{
-        return responsesService.getResponse(documentid);
+    public Responses getResponse(@RequestParam String documentId) throws InterruptedException, ExecutionException{
+        return responsesService.getResponse(documentId);
     }
 
     @PutMapping("/update")
@@ -29,8 +29,8 @@ public class ResponsesController {
     }
 
     @PutMapping("/delete")
-    public String deleteResponse(@RequestParam String documentid) throws InterruptedException, ExecutionException{
-        return responsesService.deleteResponse(documentid);
+    public String deleteResponse(@RequestParam String documentId) throws InterruptedException, ExecutionException{
+        return responsesService.deleteResponse(documentId);
     }
 
 }

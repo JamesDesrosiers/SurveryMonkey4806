@@ -6,6 +6,7 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firestore.v1.Write;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ExecutionException;
@@ -15,30 +16,33 @@ public class ResponsesService {
 
     public String createResponse(Responses response) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection("responses").document(response.getName()).set(response);
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection("responses").document(response.getDocumentId()).set(response);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
-    public Responses getResponse(String documentid) throws ExecutionException, InterruptedException {
+    public Responses getResponse(String documentId) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        DocumentReference documentReference = dbFirestore.collection("responses").document(documentid);
+        DocumentReference documentReference = dbFirestore.collection("responses").document(documentId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
         Responses response;
         if (document.exists()) {
             response = document.toObject(Responses.class);
             return response;
+        } else {
+            return null;
         }
-        return null;
     }
 
-    public String updateResponse(Responses response){
-        return "";
-    }
-
-    public String deleteResponse(String documentid){
+    public String updateResponse(Responses response) throws ExecutionException, InterruptedException {
         Firestore dbFirestore = FirestoreClient.getFirestore();
-        ApiFuture<WriteResult> writeResuilt = dbFirestore.collection("responses").document(documentid).delete();
-        return "Successfully deleted " + documentid;
+        ApiFuture<WriteResult> writeResult = dbFirestore.collection("responses").document(response.getDocumentId()).set(response);
+        return writeResult.get().getUpdateTime().toString();
+    }
+
+    public String deleteResponse(String documentId){
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        ApiFuture<WriteResult> writeResuilt = dbFirestore.collection("responses").document(documentId).delete();
+        return "Successfully deleted " + documentId;
     }
 }
