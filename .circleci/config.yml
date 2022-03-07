@@ -17,10 +17,18 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World!"
+  run-server:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "Testing Firebase"
+          command: "echo Firebase Test"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  severTests:
     jobs:
       - say-hello
