@@ -31,20 +31,18 @@ class SurveyMonkeyApplicationTests {
 	private TestRestTemplate restTemplate;
 
 	@BeforeAll
-	public static void setup() throws JSONException {
-
+	public static void setup() throws FileNotFoundException {
+		SurveyMonkeyApplication.setupDB();
 	}
 
 	@Test
 	public void getTest() throws IOException {
-		SurveyMonkeyApplication.setupDB();
 		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse", Responses.class);
 		assertEquals(response.toString(), "testResponse A B C");
 	}
 
 	@Test
 	public void createTest() throws IOException, JSONException {
-		SurveyMonkeyApplication.setupDB();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		JSONObject body = new JSONObject();
@@ -63,7 +61,6 @@ class SurveyMonkeyApplicationTests {
 
 	@Test
 	public void updateTest() throws FileNotFoundException, JSONException {
-		SurveyMonkeyApplication.setupDB();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		JSONObject body = new JSONObject();
@@ -83,7 +80,6 @@ class SurveyMonkeyApplicationTests {
 	//This test is working locally, but not on CircleCI
 	@Test
 	public void deleteTest() throws FileNotFoundException {
-		SurveyMonkeyApplication.setupDB();
 		this.restTemplate.put("http://localhost:" + port + "/delete?documentId=testResponse2", String.class);
 		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse2", Responses.class);
 		//Making the error message more explicit
