@@ -80,6 +80,7 @@ class SurveyMonkeyApplicationTests {
 		assertEquals(response.toString(), "testResponse2 A B D");
 	}
 
+	//THIS TEST SOMETIMES SAYS IT EXPECTS THE REPONCE FROM CREATE TEST
 	@Test
 	public void deleteTest() throws FileNotFoundException {
 		SurveyMonkeyApplication.setupDB();
