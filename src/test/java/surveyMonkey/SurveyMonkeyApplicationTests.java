@@ -80,16 +80,19 @@ class SurveyMonkeyApplicationTests {
 		assertEquals(response.toString(), "testResponse2 A B D");
 	}
 
-	//THIS TEST SOMETIMES SAYS IT EXPECTS THE RESPONCE FROM CREATE TEST
+	//I added a delay in this test to prevent race between the two requests.
 	@Test
 	public void deleteTest() throws FileNotFoundException {
 		SurveyMonkeyApplication.setupDB();
 		this.restTemplate.put("http://localhost:" + port + "/delete?documentId=testResponse2", String.class);
-		
+		try {
+			Thread.sleep(10);
+		}catch(InterruptedException ex){
+		}
 		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse2", Responses.class);
 		//rewriting this test to make sure that it's not asking for an input when null is expected
-		if (!response.equals(null)){
-			throw new AssertionError("The Deleted Test failed - We are supposed to get null and got " + response);
+		if (!(response == null)){
+			throw new AssertionError("deletedTest failed - We are supposed to get null and got " + response);
 		}
 	}
 
