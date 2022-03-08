@@ -80,19 +80,15 @@ class SurveyMonkeyApplicationTests {
 		assertEquals(response.toString(), "testResponse2 A B D");
 	}
 
-	//I added a delay in this test to prevent race between the two requests.
+	//This test is working locally, but not on CircleCI
 	@Test
 	public void deleteTest() throws FileNotFoundException {
 		SurveyMonkeyApplication.setupDB();
 		this.restTemplate.put("http://localhost:" + port + "/delete?documentId=testResponse2", String.class);
-		try {
-			Thread.sleep(10);
-		}catch(InterruptedException ex){
-		}
 		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse2", Responses.class);
-		//rewriting this test to make sure that it's not asking for an input when null is expected
+		//Making the error message more explicit
 		if (!(response == null)){
-			throw new AssertionError("deletedTest failed - We are supposed to get null and got " + response);
+			throw new AssertionError("deletedTest failed - We are supposed to get 'null' and got " + response);
 		}
 	}
 
