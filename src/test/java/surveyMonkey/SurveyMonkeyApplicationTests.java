@@ -79,12 +79,39 @@ class SurveyMonkeyApplicationTests {
 
 	//This test is working locally, but not on CircleCI
 	@Test
-	public void deleteTest() throws FileNotFoundException {
-		this.restTemplate.put("http://localhost:" + port + "/delete?documentId=testResponse2", String.class);
-		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse2", Responses.class);
+	public void deleteTest() throws FileNotFoundException, JSONException {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		JSONObject body = new JSONObject();
+		body.put("documentId", "testResponse3");
+		JSONArray value = new JSONArray();
+		value.put("A");
+		value.put("B");
+		body.put("answers", value);
+		HttpEntity<String> request = new HttpEntity<String>(body.toString(), headers);
+		String result = this.restTemplate.postForObject("http://localhost:" + port + "/create", request, String.class);
+
+		int secondsToSleep = 3;
+		try {
+			Thread.sleep(secondsToSleep * 1000);
+		} catch (InterruptedException ie) {
+			Thread.currentThread().interrupt();
+		}
+
+		this.restTemplate.put("http://localhost:" + port + "/delete?documentId=testResponse3", String.class);
+
+		try {
+			Thread.sleep(secondsToSleep * 1000);
+		} catch (InterruptedException ie) {
+			Thread.currentThread().interrupt();
+		}
+
+		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse3", Responses.class);
 		//Making the error message more explicit
 		if (!(response == null)){
 			throw new AssertionError("deletedTest failed - We are supposed to get 'null' and got " + response);
+		} else {
+			assertEquals(response, null);
 		}
 	}
 
