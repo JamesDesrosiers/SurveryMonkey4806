@@ -14,7 +14,6 @@
 	<name>surveyMonkey</name>
 	<description>Survey Monkey project for SYSC 4806</description>
 	<properties>
-		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

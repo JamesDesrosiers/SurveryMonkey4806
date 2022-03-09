@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/classes:target/dependency/* com.example.NAME
+web: java -jar target/surveyMonkey-0.0.1-SNAPSHOT.jar
