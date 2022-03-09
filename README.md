@@ -22,7 +22,7 @@ Pie charts will be generated for multiple-choice questions.
 Finally, histograms will be generated for scale rating questions.
 
 ## Resources
-* [Heroku Deployment]: https://sysc4806-11.herokuapp.com/
+* The Heroku Link: https://sysc4806-11.herokuapp.com/
 
 ## Upcoming Work (next sprint)
 
