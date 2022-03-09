@@ -51,4 +51,6 @@ Check each of the following points if applicable and acceptable, and elaborate:
 ## Diagrams
 ![ERD Diagram](/misc/db-erd.png)
 
-![UML Diagram](/misc/db-uml.png)
+![UML RDB Diagram](/misc/db-uml.png)
+
+![UML Class Diagram](/misc/java-uml.PNG)
