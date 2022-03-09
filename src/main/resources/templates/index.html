@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Survey Monkey</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <style type="text/css">
+        body {
+            background-image: url("https://site.surveysparrow.com/wp-content/uploads/2020/10/SurveyMonkey-Vs-Qualtrics.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            color: midnightblue;
+        }
+
+    </style>
+</head>
+<body>
+<h1>
+    Survey Monkey
+</h1>
+<div>
+    <div style="float: left">
+        <h2>What is your favourite food?</h2>
+        <form action="/Food" method="post">
+            <label for="Food">Food</label>
+            <input id="Food" name="Food" type="text">
+            <input type="submit" value="Submit"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>
