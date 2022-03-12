@@ -2,25 +2,29 @@ package surveyMonkey.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-public class Responses {
-    private String documentId;
-    private List<String> answers;
+@Component
+public class Response {
+    private int questionNum;
+    private String response;
+    private int submissionNum;
+    private String surveyId;
+   // private List<String> answers;
 
-    public Responses(){
+    /*public Response(){
 
     }
 
-    public Responses(String documentId){
+    public Response(String documentId){
         this.documentId = documentId;
     }
 
-    public Responses(String documentId, List<String> answers){
+    public Response(String documentId, List<String> answers){
         this.documentId = documentId;
         this.answers = answers;
     }
@@ -31,5 +35,5 @@ public class Responses {
             msg += " " + answer;
         }
         return msg;
-    }
+    }*/
 }

@@ -11,7 +11,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import surveyMonkey.models.Responses;
+import surveyMonkey.models.Response;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +29,7 @@ class SurveyMonkeyApplicationTests {
 
 	@Test
 	public void getTest() throws IOException {
-		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse", Responses.class);
+		Response response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse", Response.class);
 		assertEquals(response.toString(), "testResponse A B C");
 	}
 
@@ -46,7 +46,7 @@ class SurveyMonkeyApplicationTests {
 		HttpEntity<String> request = new HttpEntity<String>(body.toString(), headers);
 		String result = this.restTemplate.postForObject("http://localhost:" + port + "/create", request, String.class);
 
-		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse2", Responses.class);
+		Response response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse2", Response.class);
 		assertEquals(response.toString(), "testResponse2 A B");
 
 	}
@@ -65,7 +65,7 @@ class SurveyMonkeyApplicationTests {
 		HttpEntity<String> request = new HttpEntity<String>(body.toString(), headers);
 		this.restTemplate.put("http://localhost:" + port + "/update", request, String.class);
 
-		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse2", Responses.class);
+		Response response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse2", Response.class);
 		assertEquals(response.toString(), "testResponse2 A B D");
 	}
 
@@ -98,7 +98,7 @@ class SurveyMonkeyApplicationTests {
 			Thread.currentThread().interrupt();
 		}
 
-		Responses response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse3", Responses.class);
+		Response response = this.restTemplate.getForObject("http://localhost:" + port + "/get?documentId=testResponse3", Response.class);
 		//Making the error message more explicit
 		if (!(response == null)){
 			throw new AssertionError("deletedTest failed - We are supposed to get 'null' and got " + response);

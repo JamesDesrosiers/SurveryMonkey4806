@@ -6,7 +6,7 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.WriteResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import surveyMonkey.models.Responses;
+import surveyMonkey.models.Response;
 
 import java.util.concurrent.ExecutionException;
 
@@ -16,25 +16,25 @@ public class ResponsesService {
     @Autowired
     FirebaseInitializer db;
 
-    public String createResponse(Responses response) throws ExecutionException, InterruptedException {
+    public String createResponse(Response response) throws ExecutionException, InterruptedException {
         ApiFuture<WriteResult> collectionsApiFuture = db.getFirebase().collection("responses").document(response.getDocumentId()).set(response);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
-    public Responses getResponse(String documentId) throws ExecutionException, InterruptedException {
+    public Response getResponse(String documentId) throws ExecutionException, InterruptedException {
         DocumentReference documentReference = db.getFirebase().collection("responses").document(documentId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
-        Responses response;
+        Response response;
         if (document.exists()) {
-            response = document.toObject(Responses.class);
+            response = document.toObject(Response.class);
             return response;
         } else {
             return null;
         }
     }
 
-    public String updateResponse(Responses response) throws ExecutionException, InterruptedException {
+    public String updateResponse(Response response) throws ExecutionException, InterruptedException {
         ApiFuture<WriteResult> writeResult = db.getFirebase().collection("responses").document(response.getDocumentId()).set(response);
         return writeResult.get().getUpdateTime().toString();
     }
