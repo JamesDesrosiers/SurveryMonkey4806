@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Component
-public class Response {
+public class Response extends Model{
     private int questionNum;
     private String response;
     private int submissionNum;

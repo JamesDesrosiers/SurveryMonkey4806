@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Component
-public class Submission {
+public class Submission extends Model {
     private long submissionNum;
     private String surveyId;
     private List<Response> responses;

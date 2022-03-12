@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Component
-public class Survey {
+public class Survey extends Model{
     private String owner;
     private String status;
     private String title;
