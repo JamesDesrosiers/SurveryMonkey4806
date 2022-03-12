@@ -3,7 +3,6 @@ package surveyMonkey;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,11 +26,6 @@ class SurveyMonkeyApplicationTests {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
-
-	@BeforeAll
-	public static void setup() throws FileNotFoundException {
-		SurveyMonkeyApplication.setupDB();
-	}
 
 	@Test
 	public void getTest() throws IOException {
