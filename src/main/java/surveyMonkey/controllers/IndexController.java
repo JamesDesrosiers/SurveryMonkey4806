@@ -1,4 +1,4 @@
-package surveyMonkey;
+package surveyMonkey.controllers;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.cloud.FirestoreClient;

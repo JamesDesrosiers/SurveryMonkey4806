@@ -1,4 +1,4 @@
-package surveyMonkey;
+package surveyMonkey.models;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package surveyMonkey;
+package surveyMonkey.services;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
@@ -6,8 +6,8 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firestore.v1.Write;
 import org.springframework.stereotype.Service;
+import surveyMonkey.models.Responses;
 
 import java.util.concurrent.ExecutionException;
 

@@ -1,6 +1,8 @@
-package surveyMonkey;
+package surveyMonkey.controllers;
 
 import org.springframework.web.bind.annotation.*;
+import surveyMonkey.services.ResponsesService;
+import surveyMonkey.models.Responses;
 
 import java.util.concurrent.ExecutionException;
 
