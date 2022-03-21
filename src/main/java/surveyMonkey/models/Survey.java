@@ -10,10 +10,9 @@ import java.util.List;
 @Setter
 @Component
 public class Survey extends Model{
-    private String owner;
-    private String status;
+    private String ownerId;
+    private Boolean status;
     private String title;
-    private String surveyId;
     private List<Question> questions;
-    private List<Submission> submissions;
+
 }

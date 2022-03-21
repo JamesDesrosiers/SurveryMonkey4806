@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Survey Monkey</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <style type="text/css">
+        body {
+            background-image: url("https://site.surveysparrow.com/wp-content/uploads/2020/10/SurveyMonkey-Vs-Qualtrics.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            color: midnightblue;
+        }
+
+    </style>
+</head>
+<body>
+<h1>
+    Survey Monkey
+</h1>
+<H2>Customize <span th:text="${survey.getTitle()}"></span></H2>
+<table>
+    <tr>
+        <th th:text="'Question'"></th>
+        <th th:text="'type'"></th>
+    </tr>
+    <tr th:each="question: ${survey.getQuestions()}">
+        <td th:text="${question.question}">
+        </td>
+        <td th:text="${question.type}">
+        </td>
+    </tr>
+</table>
+<div>
+    <h2>Add Questions</h2>
+    <form action="/mc" method="post">
+        <input type="submit" value="Choice"/>
+    </form>
+    <form action="/range" method="post">
+        <input type="submit" value="Range"/>
+    </form>
+    <form action="/text" method="post">
+        <input type="submit" value="Text"/>
+    </form>
+</div>
+</body>
+</html>

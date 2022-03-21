@@ -14,9 +14,10 @@ public class Response extends Model{
     private String response;
     private int submissionNum;
     private String surveyId;
-   // private List<String> answers;
+    private List<String> answers;
+    private String documentId;
 
-    /*public Response(){
+    public Response(){
 
     }
 
@@ -35,5 +36,5 @@ public class Response extends Model{
             msg += " " + answer;
         }
         return msg;
-    }*/
+    }
 }

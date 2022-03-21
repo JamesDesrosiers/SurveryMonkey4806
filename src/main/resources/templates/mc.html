@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Survey Monkey</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <style type="text/css">
+        body {
+            background-image: url("https://site.surveysparrow.com/wp-content/uploads/2020/10/SurveyMonkey-Vs-Qualtrics.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        h1 {
+            color: midnightblue;
+        }
+    </style>
+</head>
+<body>
+<h1>
+    Survey Monkey
+</h1>
+<h2>
+    Add Multiple Choice Question to Survey, Separate each Choice with a space
+</h2>
+<form action="/create" method="get">
+    <label for="Name">Question</label>
+    <input id="Name" name="Name" type="text" style="display:block">
+    <label for="text">Choices</label>
+    <textarea id="text" class="text" cols="86" rows ="20" name="text" style="display:block"></textarea>
+    <input id="type" name="type" value="mc" type="hidden" style="display:block">
+    <input type="submit" value="Submit"/>
+</form>
+</body>
+</html>
