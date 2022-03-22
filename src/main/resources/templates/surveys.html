@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Survey Monkey</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <style type="text/css">
+        html { min-height: 100vh; }
+        body {
+            background-image: url("https://site.surveysparrow.com/wp-content/uploads/2020/10/SurveyMonkey-Vs-Qualtrics.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            color: midnightblue;
+        }
+
+        td {
+            text-align: left;
+            vertical-align: top;
+            padding: 5pt;
+            border: 1pt solid black;
+        }
+
+    </style>
+</head>
+<body>
+<h1>
+    Survey Monkey
+</h1>
+<div>
+    <h2 th:text="${survey.getTitle()}"/>
+
+    <table>
+        <tr>
+            <td>Question</td><td>Answers</td>
+        </tr>
+        <tr th:each="q: ${questions}">
+            <td>
+                <span style="font-size:16pt;" th:text="${q.getQuestion()}" /><br />
+                <b><span th:text="${q.getType()}" /> question</b>
+            </td>
+            <td th:switch="${q.getType()}">
+                <span th:case="'range'">
+                    <table>
+                        <tr>
+                            <td>Number</td><td>Responses</td>
+                        </tr>
+                        <tr th:each="ra: ${q.getRanges().keySet()}">
+                            <td th:text="${ra}" />
+                            <td th:text="${q.getRanges().get(ra)}" />
+                        </tr>
+                    </table>
+                </span>
+                <span th:case="'text'">
+                    <ul th:each="ta: ${q.getAnswers()}">
+                        <li th:text="${ta}" />
+                    </ul>
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
