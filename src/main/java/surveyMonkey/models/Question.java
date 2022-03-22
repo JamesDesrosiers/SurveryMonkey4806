@@ -9,10 +9,7 @@ import java.util.Map;
 public class Question extends Model {
     private String type;
     private String question;
-    private List<String> surveyIds;
-    private Number upperLimit;
-    private Number lowerLimit;
-    private Map<Number, Number> ranges;
+    private Map<String, Number> ranges;
     private Map<String, Number> mcq;
     private List<String> answers;
 
@@ -24,19 +21,7 @@ public class Question extends Model {
         this.question = question;
     }
 
-    public void setSurveyIds(List<String> surveyIds) {
-        this.surveyIds = surveyIds;
-    }
-
-    public void setUpperLimit(Number upperLimit) {
-        this.upperLimit = upperLimit;
-    }
-
-    public void setLowerLimit(Number lowerLimit) {
-        this.lowerLimit = lowerLimit;
-    }
-
-    public void setRanges(Map<Number, Number> ranges) {
+    public void setRanges(Map<String, Number> ranges) {
         this.ranges = ranges;
     }
 
@@ -56,19 +41,7 @@ public class Question extends Model {
         return question;
     }
 
-    public List<String> getSurveyIds() {
-        return surveyIds;
-    }
-
-    public Number getUpperLimit() {
-        return upperLimit;
-    }
-
-    public Number getLowerLimit() {
-        return lowerLimit;
-    }
-
-    public Map<Number, Number> getRanges() {
+    public Map<String, Number> getRanges() {
         return ranges;
     }
 

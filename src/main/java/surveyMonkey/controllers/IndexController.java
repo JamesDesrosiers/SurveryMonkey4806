@@ -1,6 +1,5 @@
 package surveyMonkey.controllers;
 import com.google.cloud.firestore.CollectionReference;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +10,12 @@ import surveyMonkey.services.FirebaseInitializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
 public class IndexController {
+
+    private Survey globalSurvey;
 
     @Autowired
     FirebaseInitializer db;
@@ -26,50 +26,71 @@ public class IndexController {
     }
 
     @RequestMapping("/create")
-    public Object showCreatePage(@ModelAttribute("survey") Survey survey, String Name, Model model, String type, String text) throws InterruptedException {
+    public Object showCreatePage(String Name, Model model, String type, String text, Integer lower, Integer upper) throws InterruptedException {
         switch (type){
             case "mc" :
                 String[] arr = text.split(" ");
                 Map<String, Number> mcq  = new HashMap<String, Number>();
-                System.out.println(survey.getQuestions());
-                List questions = new ArrayList<Question>();
-
                 for (String ss : arr){
                     mcq.put(ss, 0);
                 }
-                Question question = new Question();
-                question.setType(type);
-                question.setQuestion(Name);
-                question.setMcq(mcq);
-                questions.add(question);
-                survey.setQuestions(questions);
-                model.addAttribute("survey", survey);
+                Question mcqQuestion = new Question();
+                mcqQuestion.setType(type);
+                mcqQuestion.setQuestion(Name);
+                mcqQuestion.setMcq(mcq);
+                globalSurvey.getQuestions().add(mcqQuestion);
+                model.addAttribute("survey", globalSurvey);
+                break;
             case "range" :
+                Question rangeQuestion = new Question();
+                rangeQuestion.setType(type);
+                rangeQuestion.setQuestion(Name);
+                Map<String, Number> range  = new HashMap<String, Number>();
+                for (int k = lower; k < upper; k++){
+                    range.put(String.valueOf(k), 0);
+                }
+                rangeQuestion.setRanges(range);
+                globalSurvey.getQuestions().add(rangeQuestion);
+                model.addAttribute("survey", globalSurvey);
                 break;
             case "text" :
+                Question textQuestion = new Question();
+                textQuestion.setType(type);
+                textQuestion.setQuestion(Name);
+                textQuestion.setAnswers(new ArrayList<String>());
+                globalSurvey.getQuestions().add(textQuestion);
+                model.addAttribute("survey", globalSurvey);
                 break;
             case "create" :
-                Survey newSurvey = new Survey();
-                newSurvey.setTitle(Name);
-                model.addAttribute("survey", newSurvey);
+                globalSurvey = new Survey();
+                globalSurvey.setTitle(Name);
+                model.addAttribute("survey", globalSurvey);
         }
         return new ModelAndView("create");
     }
 
     @RequestMapping("/mc")
-    public Object showMcPage(@ModelAttribute("survey") Survey survey, Model model) throws InterruptedException {
-        System.out.println(survey.getTitle());
-        model.addAttribute("survey", survey);
+    public Object showMcPage(Model model) throws InterruptedException {
+        model.addAttribute("survey", globalSurvey);
         return new ModelAndView("mc");
     }
 
-    @RequestMapping("/Food")
-    public Object login(String Food) throws InterruptedException {
-        CollectionReference responsesCR = db.getFirebase().collection("responses");
-        JSONObject body = new JSONObject();
-        body.put("documentId", "favFood");
-        body.put("Favourite Food", Food);
-        responsesCR.add(body);
+    @RequestMapping("/range")
+    public Object showRangePage(Model model) throws InterruptedException {
+        model.addAttribute("survey", globalSurvey);
+        return new ModelAndView("range");
+    }
+
+    @RequestMapping("/text")
+    public Object showTextPage(Model model) throws InterruptedException {
+        model.addAttribute("survey", globalSurvey);
+        return new ModelAndView("text");
+    }
+
+    @RequestMapping("/success")
+    public Object login(Model model) throws InterruptedException {
+        CollectionReference responsesCR = db.getFirebase().collection("surveys");
+        responsesCR.add(globalSurvey);
         return new ModelAndView("/success");
     }
 }
