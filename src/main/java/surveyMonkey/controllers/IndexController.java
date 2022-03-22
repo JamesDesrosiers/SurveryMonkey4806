@@ -31,7 +31,9 @@ public class IndexController {
             case "mc" :
                 String[] arr = text.split(" ");
                 Map<String, Number> mcq  = new HashMap<String, Number>();
+                System.out.println(survey.getQuestions());
                 List questions = new ArrayList<Question>();
+
                 for (String ss : arr){
                     mcq.put(ss, 0);
                 }
@@ -55,7 +57,9 @@ public class IndexController {
     }
 
     @RequestMapping("/mc")
-    public Object showMcPage() throws InterruptedException {
+    public Object showMcPage(@ModelAttribute("survey") Survey survey, Model model) throws InterruptedException {
+        System.out.println(survey.getTitle());
+        model.addAttribute("survey", survey);
         return new ModelAndView("mc");
     }
 
