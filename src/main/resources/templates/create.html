@@ -38,6 +38,8 @@
 <div>
     <h2>Add Questions</h2>
     <form action="/mc" method="post">
+        <input id="survey" name="survey" th:value="${survey}" type="hidden">
+        <input th:value="${survey.getTitle()}" type="hidden">
         <input type="submit" value="Choice"/>
     </form>
     <form action="/range" method="post">
@@ -45,6 +47,9 @@
     </form>
     <form action="/text" method="post">
         <input type="submit" value="Text"/>
+    </form>
+    <form action="/success" method="post">
+        <input type="submit" value="Save"/>
     </form>
 </div>
 </body>
