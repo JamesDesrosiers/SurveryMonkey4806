@@ -22,14 +22,15 @@
     Survey Monkey
 </h1>
 <div>
-    <div style="float: left">
-        <h2>What is your favourite food?</h2>
-        <form action="/Food" method="post">
-            <label for="Food">Food</label>
-            <input id="Food" name="Food" type="text">
-            <input type="submit" value="Submit"/>
-        </form>
-    </div>
+    <form action="/surveys" method="get" style="float: left">
+        <input type="submit" value="View Survey's"/>
+    </form>
+    <form action="/create" method="get" style="float: right">
+        <label for="Name">Name</label>
+        <input id="Name" name="Name" type="text" required>
+        <input id="type" name="type" value="create" type="hidden" style="display:block">
+        <input type="submit" value="Create New Survey"/>
+    </form>
 </div>
 </body>
 </html>

@@ -1,6 +1,8 @@
-package surveyMonkey;
+package surveyMonkey.controllers;
 
 import org.springframework.web.bind.annotation.*;
+import surveyMonkey.services.ResponsesService;
+import surveyMonkey.models.Response;
 
 import java.util.concurrent.ExecutionException;
 
@@ -14,17 +16,17 @@ public class ResponsesController {
     }
 
     @PostMapping("/create")
-    public String createResponse(@RequestBody Responses response) throws InterruptedException, ExecutionException{
+    public String createResponse(@RequestBody Response response) throws InterruptedException, ExecutionException{
         return responsesService.createResponse(response);
     }
 
     @GetMapping("/get")
-    public Responses getResponse(@RequestParam String documentId) throws InterruptedException, ExecutionException{
+    public Response getResponse(@RequestParam String documentId) throws InterruptedException, ExecutionException{
         return responsesService.getResponse(documentId);
     }
 
     @PutMapping("/update")
-    public String getResponse(@RequestBody Responses response) throws InterruptedException, ExecutionException{
+    public String getResponse(@RequestBody Response response) throws InterruptedException, ExecutionException{
         return responsesService.updateResponse(response);
     }
 

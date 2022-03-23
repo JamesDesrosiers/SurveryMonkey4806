@@ -10,22 +10,26 @@
             background-size: cover;
             background-repeat: no-repeat;
         }
-
         h1 {
             color: midnightblue;
         }
-
     </style>
 </head>
 <body>
 <h1>
     Survey Monkey
 </h1>
+<H2><span th:text="${survey.getTitle()}"></span></H2>
 <h2>
-    Successfully Created Survey
+    Add Multiple Choice Question to Survey, Separate each Choice with a space
 </h2>
-<form action="/" method="post">
-    <input type="submit" value="Go back to main page"/>
+<form action="/create" method="get">
+    <label for="Name">Question</label>
+    <input id="Name" name="Name" type="text" style="display:block">
+    <label for="text">Choices</label>
+    <textarea id="text" class="text" cols="75" rows ="1" name="text" style="display:block"></textarea>
+    <input id="type" name="type" value="mc" type="hidden" style="display:block">
+    <input type="submit" value="Submit"/>
 </form>
 </body>
 </html>
