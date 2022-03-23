@@ -103,6 +103,7 @@ class SurveyMonkeyApplicationTests {
 		if (!(response == null)){
 			throw new AssertionError("deletedTest failed - We are supposed to get 'null' and got " + response);
 		} else {
+			//Why was this added? It will never actually trigger??
 			assertEquals(response, null);
 		}
 	}
