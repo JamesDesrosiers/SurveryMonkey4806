@@ -53,4 +53,4 @@ Check each of the following points if applicable and acceptable, and elaborate:
 
 ![UML RDB Diagram](/misc/db-uml.png)
 
-![UML Class Diagram](/misc/java-uml.PNG)
+![UML Class Diagram](/misc/SurveyMonkeyClassDiagram.png)
