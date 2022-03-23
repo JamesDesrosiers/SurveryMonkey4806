@@ -105,6 +105,6 @@ public class IndexController {
     public Object login(Model model) throws InterruptedException {
         CollectionReference responsesCR = db.getFirebase().collection("surveys");
         responsesCR.add(globalSurvey);
-        return new ModelAndView("/success");
+        return new ModelAndView("success");
     }
 }
