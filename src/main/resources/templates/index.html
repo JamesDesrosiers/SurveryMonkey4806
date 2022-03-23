@@ -24,8 +24,16 @@
 </h1>
 <div>
     <form action="/surveys" method="get" style="float: left">
-        <input type="submit" value="View Survey's"/>
-    </form>
+        <input type="submit" value="View Survey Results"/>
+    </form><br />
+    <h3>Open Surveys</h3>
+    <div th:each="s: ${surveyList}">
+        <form action="/survey" method="get" style="float: left">
+            <input type="hidden" name="id" th:value="${s.getId()}" />
+            <input type="submit" th:value="${s.getTitle()}" />
+        </form>
+    </div>
+
     <form action="/create" method="get" style="float: right">
         <label for="Name">Name</label>
         <input id="Name" name="Name" type="text" required>

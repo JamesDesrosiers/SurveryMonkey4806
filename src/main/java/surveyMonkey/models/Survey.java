@@ -1,7 +1,10 @@
 package surveyMonkey.models;
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.common.collect.ArrayListMultimap;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Component
@@ -14,6 +17,27 @@ public class Survey extends Model{
     public Survey() {
         questions = new ArrayList<Question>();
         status = true;
+    }
+
+    public void setSurvey(DocumentSnapshot document) {
+        setId(document.getId());
+        setStatus(document.getBoolean("status"));
+        setTitle(document.getString("title"));
+        setOwnerId(document.getString("ownerId"));
+
+        ArrayList<HashMap<String, Object>> qs = (ArrayList)document.get("questions");
+        ArrayList<Question> questions = new ArrayList();
+        for(HashMap<String, Object> question : qs) {
+            questions.add(new Question((String)question.get("question"),
+                            (HashMap<String, Number>)question.get("ranges"),
+                            (HashMap<String, Number>)question.get("mcq"),
+                            (List<String>)question.get("answers")));
+        }
+        setQuestions(questions);
+    }
+
+    public Survey(DocumentSnapshot document) {
+        setSurvey(document);
     }
 
     public void setOwnerId(String ownerId) {

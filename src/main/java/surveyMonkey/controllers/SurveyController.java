@@ -1,29 +1,45 @@
 package surveyMonkey.controllers;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.Query;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import surveyMonkey.models.Question;
+import surveyMonkey.models.Response;
 import surveyMonkey.models.Survey;
 import surveyMonkey.services.FirebaseInitializer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class SurveyController {
 
     @Autowired
     FirebaseInitializer db;
+
+    @RequestMapping("/survey")
+    public ModelAndView surveyPage(@RequestParam(value="id", required=true) String id, @ModelAttribute("survey") Survey survey) throws ExecutionException, InterruptedException {
+        DocumentReference query = db.getFirebase().document("surveys/"+id);
+
+        survey.setSurvey(query.get().get());
+        return new ModelAndView("survey");
+    }
+
+    @RequestMapping(value="/submit", method = RequestMethod.GET)
+    public @ResponseBody Response submission(@RequestParam Map<String, String> queryParameters) throws ExecutionException, InterruptedException {
+        Survey s = new Survey(
+            db.getFirebase().document("surveys/"+queryParameters.get("id")).get().get()
+        );
+
+        //System.out.println(s.getQuestions());
+
+        return null;
+    }
 
     @RequestMapping("/surveys")
     public ModelAndView resultsPage(@ModelAttribute("survey") Survey survey, @ModelAttribute("questions") ArrayList<Question> questions) throws Exception {
@@ -60,12 +76,12 @@ public class SurveyController {
                 nlq.setAnswers(responseList.get(q));
             }
             else if (questionList.get(q).equals("range")){
-                HashMap<Number, Number> a = new HashMap<>();
+                HashMap<String, Number> a = new HashMap<>();
                 for(String range : responseList.get(q)){
                     if(!a.containsKey(Integer.parseInt(range))){
-                        a.put(Integer.parseInt(range), 1);
+                        a.put(range, 1);
                     }else{
-                        a.replace(Integer.parseInt(range), (Integer)(a.get(Integer.parseInt(range)))+1);
+                        a.replace(range, (Integer)(a.get(Integer.parseInt(range)))+1);
                     }
                 }
                 nlq.setRanges(a);

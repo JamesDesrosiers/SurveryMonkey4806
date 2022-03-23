@@ -1,5 +1,8 @@
 package surveyMonkey.controllers;
+import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +13,9 @@ import surveyMonkey.services.FirebaseInitializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class IndexController {
@@ -21,7 +26,16 @@ public class IndexController {
     FirebaseInitializer db;
 
     @RequestMapping("/")
-    public ModelAndView mainPage() {
+    public ModelAndView mainPage(@ModelAttribute("surveyList") ArrayList<Survey> surveyList) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.getFirebase().collection("surveys").whereEqualTo("status", true).get();
+        QuerySnapshot qs = query.get();
+
+        List<QueryDocumentSnapshot> documents = qs.getDocuments();
+        for(QueryDocumentSnapshot document : documents){
+            Survey s = new Survey(document);
+            surveyList.add(s);
+        }
+
         return new ModelAndView("index");
     }
 
