@@ -38,6 +38,7 @@ Finally, histograms will be generated for scale rating questions.
 
 ## Scrums
 * [March 8](https://github.com/Jasenerd/SurveryMonkey4806/issues/16)
+* [March 22](https://github.com/Jasenerd/SurveryMonkey4806/issues/22)
 
 ## Code Review
 Check each of the following points if applicable and acceptable, and elaborate:
@@ -53,4 +54,6 @@ Check each of the following points if applicable and acceptable, and elaborate:
 
 ![UML RDB Diagram](/misc/db-uml.png)
 
-![UML Class Diagram](/misc/java-uml.PNG)
+![Flow_Chart](/misc/SurveyMonkeyFlowChart.png)
+
+![UML Class Diagram](/misc/SurveyMonkeyClassDiagram.png)
