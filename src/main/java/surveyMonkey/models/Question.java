@@ -13,6 +13,22 @@ public class Question extends Model {
     private Map<String, Number> mcq;
     private List<String> answers;
 
+    public Question(){ }
+
+    public Question(String question, Map<String, Number> ranges, Map<String, Number> mcq, List<String> answers){
+        setQuestion(question);
+        if(ranges!=null){
+            setType("range");
+            setRanges(ranges);
+        }else if(mcq!=null){
+            setType("mc");
+            setMcq(mcq);
+        }else if(answers!=null){
+            setType("text");
+            setAnswers(answers);
+        }
+    }
+
     public void setType(String type) {
         this.type = type;
     }
