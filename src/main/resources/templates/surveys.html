@@ -24,11 +24,53 @@
         }
 
     </style>
+    <script type = "text/javascript">
+        window.onload = function() {
+
+        var dps = [ [ ] ];
+        var chart = new CanvasJS.Chart("chartContainer", {
+	        exportEnabled: true,
+	        animationEnabled: true,
+	        theme: "light2", // "light1", "dark1", "dark2"
+	        title: {
+		        text: "Visitor Demographics of a Website"
+        	},
+        	subtitles: [{
+        		text: "Age Groups of Visitors"
+        	}],
+           	data: [{
+	        	type: "pie",
+	        	yValueFormatString: "#,##0\"%\"",
+	        	indexLabel: "{label} - {y}",
+	        	dataPoints: dps[0]
+        	}]
+        });
+
+        var yValue;
+        var label;
+
+        <c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">
+	        <c:forEach items="${dataPoints}" var="dataPoint">
+	        	yValue = parseFloat("${dataPoint.y}");
+	        	label = "${dataPoint.label}";
+	        	dps[parseInt("${loop.index}")].push({
+	        		label : label,
+	        		y : yValue,
+	        	});
+        	</c:forEach>
+        </c:forEach>
+        dps[0]
+
+        chart.render();
+
+        }
+    </script>
 </head>
 <body>
 <h1>
     Survey Monkey
 </h1>
+<div id = "chartContainer" style="height: 370px; width: 100%;"></div>
 <div>
     <h2 th:text="${survey.getTitle()}"/>
 
@@ -62,5 +104,6 @@
         </tr>
     </table>
 </div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>
