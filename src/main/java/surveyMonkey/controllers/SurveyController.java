@@ -42,53 +42,10 @@ public class SurveyController {
     }
 
     @RequestMapping("/surveys")
-    public ModelAndView resultsPage(@ModelAttribute("survey") Survey survey, @ModelAttribute("questions") ArrayList<Question> questions) throws Exception {
+    public ModelAndView resultsPage(@RequestParam(value="id", required=true) String id, @ModelAttribute("survey") Survey survey) throws ExecutionException, InterruptedException {
+        DocumentReference query = db.getFirebase().document("surveys/"+id);
 
-        survey.setTitle("Hot Dogs");
-        survey.setId("hotDogs");
-
-        ApiFuture<QuerySnapshot> query = db.getFirebase().collection("responses").whereEqualTo("documentId", survey.getId()).get();
-        QuerySnapshot qs = query.get();
-        HashMap<String, ArrayList<String>> responseList = new HashMap<>();
-        HashMap<String, String> questionList = new HashMap<>();
-        questionList.put("Hot Dog Rating", "range");
-        questionList.put("Yearly hot dog consumption", "text");
-
-        List<QueryDocumentSnapshot> documents = qs.getDocuments();
-        for(QueryDocumentSnapshot document : documents){
-            for(String q : questionList.keySet()){
-                if(!responseList.containsKey(q)){
-                    responseList.put(q, new ArrayList<>());
-                }
-                if(questionList.get(q).equals("range")){
-                    responseList.get(q).add(document.getLong(q).toString());
-                }else {
-                    responseList.get(q).add(document.getString(q));
-                }
-            }
-        }
-
-        for(String q : questionList.keySet()){
-            Question nlq = new Question();
-            nlq.setType(questionList.get(q));
-            nlq.setQuestion(q);
-            if (questionList.get(q).equals("text")){
-                nlq.setAnswers(responseList.get(q));
-            }
-            else if (questionList.get(q).equals("range")){
-                HashMap<String, Number> a = new HashMap<>();
-                for(String range : responseList.get(q)){
-                    if(!a.containsKey(Integer.parseInt(range))){
-                        a.put(range, 1);
-                    }else{
-                        a.replace(range, (Integer)(a.get(Integer.parseInt(range)))+1);
-                    }
-                }
-                nlq.setRanges(a);
-            }
-            questions.add(nlq);
-        }
-
+        survey.setSurvey(query.get().get());
         return new ModelAndView("surveys");
     }
 

@@ -36,7 +36,7 @@
         <tr>
             <td>Question</td><td>Answers</td>
         </tr>
-        <tr th:each="q: ${questions}">
+        <tr th:each="q: ${survey.getQuestions()}">
             <td>
                 <span style="font-size:16pt;" th:text="${q.getQuestion()}" /><br />
                 <b><span th:text="${q.getType()}" /> question</b>
