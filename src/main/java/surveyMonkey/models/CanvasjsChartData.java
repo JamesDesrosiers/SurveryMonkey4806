@@ -48,7 +48,8 @@ public class CanvasjsChartData {
         //get list of questions
         List<Question> li = survey.getQuestions();
         List<Map<Object,Object>> dataPoints1 = new ArrayList<Map<Object,Object>>();
-        List<List<Map<Object,Object>>> list = new ArrayList<List<Map<Object,Object>>>();
+        List<List<Map<Object,Object>>> question= new ArrayList<List<Map<Object,Object>>>();
+        List<Object> quiz = new ArrayList<Object();
 
         for(Question q : li) {
             if(q.getMcq() != null){
@@ -58,8 +59,7 @@ public class CanvasjsChartData {
                     map.put("y", val.getValue());
                     dataPoints1.add(map);
                 }
-                list.add(dataPoints1);
-                break;
+                question.add(dataPoints1);
             }else if(q.getRanges() != null){
                 for(Map.Entry<String, Number> val : q.getRanges().entrySet()){
                     map = new HashMap<Object, Object>();
@@ -67,13 +67,12 @@ public class CanvasjsChartData {
                     map.put("y", val.getValue());
                     dataPoints1.add(map);
                 }
-                list.add(dataPoints1);
-                break;
-
+                question.add(dataPoints1);
             }else{
-                //The question is a Fill in the answer type and does not require a chart
-                break;
+                quiz.add(q.getAnswers());
+                continue;
             }
+            quiz.add(question);
         }
         return list;
     }
