@@ -49,7 +49,7 @@ public class CanvasjsChartData {
         List<Question> li = survey.getQuestions();
         List<Map<Object,Object>> dataPoints1 = new ArrayList<Map<Object,Object>>();
         List<List<Map<Object,Object>>> question= new ArrayList<List<Map<Object,Object>>>();
-        List<Object> quiz = new ArrayList<Object();
+        List<Object> quiz = new ArrayList<Object>();
 
         for(Question q : li) {
             if(q.getMcq() != null){
@@ -58,6 +58,8 @@ public class CanvasjsChartData {
                     map.put("label", val.getKey());
                     map.put("y", val.getValue());
                     dataPoints1.add(map);
+                    //temp
+                    break;
                 }
                 question.add(dataPoints1);
             }else if(q.getRanges() != null){
@@ -65,7 +67,9 @@ public class CanvasjsChartData {
                     map = new HashMap<Object, Object>();
                     map.put("label", val.getKey());
                     map.put("y", val.getValue());
-                    dataPoints1.add(map);
+
+                    //temp
+                    break;
                 }
                 question.add(dataPoints1);
             }else{
@@ -74,6 +78,6 @@ public class CanvasjsChartData {
             }
             quiz.add(question);
         }
-        return list;
+        return question;
     }
 }
