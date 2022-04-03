@@ -41,13 +41,13 @@ public class SurveyController {
 
     @RequestMapping("/surveys")
     public ModelAndView resultsPage(@RequestParam(value="id", required=true) String id, @ModelAttribute("survey") Survey survey, ModelMap modelMap) throws ExecutionException, InterruptedException {
-        List<List<Map<Object, Object>>> canvasjsDataList = CanvasjsChartData.getCanvasjsDataList();
-        modelMap.addAttribute("dataPointsList", canvasjsDataList);
-
-
         DocumentReference query = db.getFirebase().document("surveys/"+id);
 
         survey.setSurvey(query.get().get());
+
+
+        List<List<Map<Object, Object>>> canvasjsDataList = CanvasjsChartData.getCanvasjsDataList(survey);
+        modelMap.addAttribute("dataPointsList", canvasjsDataList);
         return new ModelAndView("surveys");
     }
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import surveyMonkey.models.Survey;
+import surveyMonkey.models.Question;
 
 public class CanvasjsChartData {
 
@@ -40,7 +42,39 @@ public class CanvasjsChartData {
         list.add(dataPoints1);
     }
 
-    public static List<List<Map<Object, Object>>> getCanvasjsDataList(){
+    //TODO: UPdate format to allow multiple questions to be rendered via this!
+    public static List<List<Map<Object, Object>>> getCanvasjsDataList(Survey survey){
+
+        //get list of questions
+        List<Question> li = survey.getQuestions();
+        List<Map<Object,Object>> dataPoints1 = new ArrayList<Map<Object,Object>>();
+        List<List<Map<Object,Object>>> list = new ArrayList<List<Map<Object,Object>>>();
+
+        for(Question q : li) {
+            if(q.getMcq() != null){
+                for(Map.Entry<String, Number> val : q.getMcq().entrySet()){
+                    map = new HashMap<Object, Object>();
+                    map.put("label", val.getKey());
+                    map.put("y", val.getValue());
+                    dataPoints1.add(map);
+                }
+                list.add(dataPoints1);
+                break;
+            }else if(q.getRanges() != null){
+                for(Map.Entry<String, Number> val : q.getRanges().entrySet()){
+                    map = new HashMap<Object, Object>();
+                    map.put("label", val.getKey());
+                    map.put("y", val.getValue());
+                    dataPoints1.add(map);
+                }
+                list.add(dataPoints1);
+                break;
+
+            }else{
+                //The question is a Fill in the answer type and does not require a chart
+                break;
+            }
+        }
         return list;
     }
 }
