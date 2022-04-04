@@ -39,7 +39,7 @@
     <div th:switch="${question.getType()}">
       <span th:case="'range'">
         <select th:name="${question.getQuestion()}">
-          <option th:each="rv: ${question.getRanges().keySet()}" th:text="${rv}" th:value="${rv}"></option>
+          <option th:each="rv: ${question.getPrintableRange()}" th:text="${rv}" th:value="${rv}"></option>
         </select>
         <br /><br/>
       </span>
