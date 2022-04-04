@@ -14,7 +14,7 @@ public class CanvasjsChartData {
     static List<Map<Object,Object>> dataPoints1 = new ArrayList<Map<Object,Object>>();
 
     static {
-        map = new HashMap<Object,Object>();
+      /*  map = new HashMap<Object,Object>();
         map.put("label", "18 yrs and Under");
         map.put("y", 7);
         dataPoints1.add(map);
@@ -39,7 +39,7 @@ public class CanvasjsChartData {
         map.put("y", 13);
         dataPoints1.add(map);
 
-        list.add(dataPoints1);
+        list.add(dataPoints1);*/
     }
 
     //TODO: UPdate format to allow multiple questions to be rendered via this!

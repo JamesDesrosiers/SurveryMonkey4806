@@ -23,9 +23,14 @@
     Survey Monkey
 </h1>
 <div>
-    <form action="/surveys" method="get" style="float: left">
-        <input type="submit" value="View Survey Results"/>
-    </form><br />
+    <h3>View Survey Results</h3>
+    <div th:each="s: ${surveyList}">
+        <form action="/surveys" method="get" style="float: left">
+            <input type="hidden" name = "id" th:value="${s.getId()}" />
+            <input type="submit" value= "View" th:value="${s.getTitle()}"/>
+        </form>
+    </div>
+    <br>
     <h3>Open Surveys</h3>
     <div th:each="s: ${surveyList}">
         <form action="/survey" method="get" style="float: left">
