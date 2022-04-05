@@ -2,6 +2,7 @@ package surveyMonkey.controllers;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.google.firestore.v1.Write;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,14 +41,25 @@ public class SurveyController {
     }
 
     @RequestMapping(value="/submit", method = RequestMethod.GET)
-    public @ResponseBody Response submission(@RequestParam Map<String, String> queryParameters) throws ExecutionException, InterruptedException {
+    public @ResponseBody RedirectView submission(@RequestParam Map<String, String> queryParameters) throws ExecutionException, InterruptedException {
         Survey s = new Survey(
             db.getFirebase().document("surveys/"+queryParameters.get("id")).get().get()
         );
 
-        //System.out.println(s.getQuestions());
+        for(Question q : s.getQuestions()){
+            if (q.getType().equals("text")) {
+                q.getAnswers().add(queryParameters.get(q.getQuestion()));
+            }
+            else if(q.getType().equals("mc")) {
+                q.getMcq().replace(queryParameters.get(q.getQuestion()), q.getMcq().get(queryParameters.get(q.getQuestion())).intValue()+1);
+            }
+            else {
+                q.getRanges().replace(queryParameters.get(q.getQuestion()), q.getRanges().get(queryParameters.get(q.getQuestion())).intValue()+1);
+            }
+            ApiFuture<WriteResult> write = db.getFirebase().document("surveys/"+s.getId()).update("questions", s.getMapList());
+        }
 
-        return null;
+        return new RedirectView("/");
     }
 
     @RequestMapping(value="/close", method = RequestMethod.GET)

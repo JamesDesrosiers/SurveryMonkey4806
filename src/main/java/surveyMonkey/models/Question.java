@@ -13,6 +13,9 @@ public class Question extends Model {
     private Map<String, Number> mcq;
     private List<String> answers;
 
+    private Integer min = null;
+    private Integer max = null;
+
     public Question(){ }
 
     public Question(String question, Map<String, Number> ranges, Map<String, Number> mcq, List<String> answers){
@@ -20,6 +23,15 @@ public class Question extends Model {
         if(ranges!=null){
             setType("range");
             setRanges(ranges);
+            for(String r : ranges.keySet()) {
+                int c = Integer.parseInt(r);
+                if (max==null || c > max) {
+                    max = c;
+                }
+                if (min==null || c < min) {
+                    min = c;
+                }
+            }
         }else if(mcq!=null){
             setType("mc");
             setMcq(mcq);
@@ -27,6 +39,14 @@ public class Question extends Model {
             setType("text");
             setAnswers(answers);
         }
+    }
+
+    public Integer[] getPrintableRange() {
+        Integer[] pr = new Integer[ranges.size()];
+        for(int i=0; i<=max-min; i++){
+            pr[i] = i+min;
+        }
+        return pr;
     }
 
     public void setType(String type) {
