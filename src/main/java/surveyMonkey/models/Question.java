@@ -49,6 +49,26 @@ public class Question extends Model {
         return pr;
     }
 
+    public String printJson() {
+        Map<String, Number> r;
+        if (type.equals("text")){
+            return "";
+        }
+        else if (type.equals("mc")){
+            r = getMcq();
+        }else{
+            r = getRanges();
+        }
+        String output = "";
+        for (int i=0; i<r.size(); i++) {
+            output += "{label: '"+r.keySet().toArray()[i]+"', y: "+r.get(r.keySet().toArray()[i])+"}";
+            if(i+1<r.size()){
+                output += ",";
+            }
+        }
+        return output;
+    }
+
     public void setType(String type) {
         this.type = type;
     }

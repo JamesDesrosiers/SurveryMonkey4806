@@ -29,22 +29,17 @@
 <h1>
     Survey Monkey
 </h1>
-<div id = "chartContainer" style="height: 370px; width: 100%;"></div>
 <div>
     <h2 th:text="${survey.getTitle()}"/>
 
-    <table>
-        <tr>
-            <td>Question</td><td>Answers</td>
-        </tr>
-        <tr th:each="q: ${survey.getQuestions()}">
-            <td>
+        <div th:each="q, it: ${survey.getQuestions()}">
+            <div>
                 <span style="font-size:16pt;" th:text="${q.getQuestion()}"  id='qtemp' /><br />
-                <b><span th:text="${q.getType()}" /> question</b>
-            </td>
-            <td th:switch="${q.getType()}">
+                <b><span th:text="${q.getType()}" /> question</b><br />
+            </div>
+            <div th:switch="${q.getType()}">
                 <span th:case="'range'">
-                    <table>
+                    <!--<table>
                         <tr>
                             <td>Number</td><td>Responses</td>
                         </tr>
@@ -52,7 +47,28 @@
                             <td th:text="${ra}" />
                             <td th:text="${q.getRanges().get(ra)}" />
                         </tr>
-                    </table>
+                    </table>-->
+                    <div th:id = "${q.getQuestion()}" style="height: 370px; width: 50%;"></div>
+                    <script th:inline="text">
+                        window.addEventListener("load", function (event) {
+                        var chart[[${it.index}]] = new CanvasJS.Chart("[(${q.getQuestion()})]", {
+                            axisY: {
+                                interval: 1
+                            },
+                            data: [
+                                {
+                                    type: "column",
+                                    dataPoints: [
+                                            [(${q.printJson()})]
+                                        ]
+                                }
+                            ],
+                            backgroundColor: "rgba(255,255,255, 0.0)"
+                        });
+
+                            chart[[${it.index}]].render();
+                        });
+                    </script>
                 </span>
                 <span th:case="'text'">
                     <ul th:each="ta: ${q.getAnswers()}">
@@ -60,42 +76,27 @@
                     </ul>
                 </span>
                 <span th:case = "'mc'">
-                    <table>
-                        <tr>
-                            <td>Number</td><td>Responses</td>
-                        </tr>
-                        <tr th:each="ra: ${q.getMcq().keySet()}">
-                            <td th:text="${ra}" />
-                            <td th:text="${q.getMcq().get(ra)}" />
-                        </tr>
-                            test
-                            <script>
-                                let sur = jQuery.getJSON('http://localhost:8080/datapoints');
-                                console.log(sur);
-                                window.onload = function () {
-                                var chart = new CanvasJS.Chart("chartContainer", {
-                                    data: [
-                                    {
-                                        type: "pie",
-                                        dataPoints: [
-                                            { x: 10, y: 10 },
-                                            { x: 20, y: 15 },
-                                            { x: 30, y: 25 },
-                                            { x: 40, y: 30 },
-                                            { x: 50, y: 28 }
-                                            ]
-                                    }
+                    <div th:id = "${q.getQuestion()}" style="height: 370px; width: 50%;"></div>
+                    <script th:inline="text">
+                        window.addEventListener("load", function (event) {
+                        var chart[[${it.index}]] = new CanvasJS.Chart("[(${q.getQuestion()})]", {
+                            data: [
+                            {
+                                type: "pie",
+                                dataPoints: [
+                                    [(${q.printJson()})]
                                     ]
-                                });
+                            }
+                            ],
+                            backgroundColor: "rgba(255,255,255, 0.0)"
+                        });
 
-                                    chart.render();
-                                }
-                            </script>
-                    </table>
+                            chart[[${it.index}]].render();
+                        });
+                    </script>
                 </span>
-            </td>
-        </tr>
-    </table>
+            </div><br /><hr /><br />
+        </div>
 </div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
