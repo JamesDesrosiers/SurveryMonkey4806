@@ -2,7 +2,6 @@ package surveyMonkey.controllers;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.google.firestore.v1.Write;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 import surveyMonkey.models.CanvasjsChartData;
 import org.springframework.web.servlet.view.RedirectView;
 import surveyMonkey.models.Question;
-import surveyMonkey.models.Response;
 import surveyMonkey.models.Survey;
 import surveyMonkey.services.FirebaseInitializer;
 
@@ -66,4 +64,10 @@ public class SurveyController {
         return new ModelAndView("surveys");
     }
 
+    @RequestMapping(value = "/datapoints")
+    public @ResponseBody Object postDatapoints(ModelMap modelMap) {
+        return modelMap.getAttribute("dataPointsList");
+    }
 }
+
+

@@ -70,8 +70,8 @@
                         </tr>
                             test
                             <script>
-                                let test = document.getElementById("dataPointsList");
-                                console.log(test)
+                                let sur = jQuery.getJSON('http://localhost:8080/datapoints');
+                                console.log(sur);
                                 window.onload = function () {
                                 var chart = new CanvasJS.Chart("chartContainer", {
                                     data: [
