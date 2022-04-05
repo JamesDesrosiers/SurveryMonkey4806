@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <title>Survey Monkey</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <style type="text/css">
+        html { min-height: 100vh; }
+        body {
+            background-image: url("https://site.surveysparrow.com/wp-content/uploads/2020/10/SurveyMonkey-Vs-Qualtrics.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            color: midnightblue;
+        }
+
+        td {
+            text-align: left;
+            vertical-align: top;
+            padding: 5pt;
+            border: 1pt solid black;
+        }
+
+    </style>
+</head>
+<body>
+<h1>
+  Survey Monkey
+</h1>
+<form method="GET" action="/close">
+  <h2 th:text="${survey.getTitle()}"/>
+  <input type="hidden" name="id" th:value="${survey.getId()}" />
+  <span style="color:#656565;">A survey by <span style="color:black;" th:text="${survey.getOwnerEmail()}" />
+    <div th:each="question,s: ${survey.getQuestions()}">
+      <b style="font-size:15pt;" th:text="${question.getQuestion()}" /><br />
+      <b style="font-size:15pt;" th:text="${question.getType()}" /><br />
+  </div>
+  </span><br /><br />
+  <input type="submit" value="Close" />
+</form>
+</body>
+</html>

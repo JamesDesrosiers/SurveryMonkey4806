@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 public class Survey extends Model{
-    private String ownerId;
+    private String ownerEmail;
     private Boolean status;
     private String title;
     private List<Question> questions;
@@ -23,7 +23,7 @@ public class Survey extends Model{
         setId(document.getId());
         setStatus(document.getBoolean("status"));
         setTitle(document.getString("title"));
-        setOwnerId(document.getString("ownerId"));
+        setOwnerEmail(document.getString("ownerEmail"));
 
         ArrayList<HashMap<String, Object>> qs = (ArrayList)document.get("questions");
         ArrayList<Question> questions = new ArrayList();
@@ -40,10 +40,6 @@ public class Survey extends Model{
         setSurvey(document);
     }
 
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
-    }
-
     public void setStatus(Boolean status) {
         this.status = status;
     }
@@ -56,10 +52,6 @@ public class Survey extends Model{
         this.questions = questions;
     }
 
-    public String getOwnerId() {
-        return ownerId;
-    }
-
     public Boolean getStatus() {
         return status;
     }
@@ -70,5 +62,13 @@ public class Survey extends Model{
 
     public List<Question> getQuestions() {
         return questions;
+    }
+
+    public String getOwnerEmail() {
+        return ownerEmail;
+    }
+
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 }
