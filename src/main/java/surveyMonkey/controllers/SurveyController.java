@@ -53,8 +53,9 @@ public class SurveyController {
             else {
                 q.getRanges().replace(queryParameters.get(q.getQuestion()), q.getRanges().get(queryParameters.get(q.getQuestion())).intValue()+1);
             }
-            ApiFuture<WriteResult> write = db.getFirebase().document("surveys/"+s.getId()).update("questions", s.getMapList());
         }
+        ApiFuture<WriteResult> write = db.getFirebase().document("surveys/"+s.getId()).update("questions", s.getMapList());
+        write.get();
 
         return new RedirectView("/");
     }

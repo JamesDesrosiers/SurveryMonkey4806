@@ -86,7 +86,7 @@ public class IndexController {
                 rangeQuestion.setType(type);
                 rangeQuestion.setQuestion(Name);
                 Map<String, Number> range  = new HashMap<String, Number>();
-                for (int k = lower; k < upper; k++){
+                for (int k = lower; k <= upper; k++){
                     range.put(String.valueOf(k), 0);
                 }
                 rangeQuestion.setRanges(range);

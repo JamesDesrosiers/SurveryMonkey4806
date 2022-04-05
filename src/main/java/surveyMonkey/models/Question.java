@@ -51,17 +51,20 @@ public class Question extends Model {
 
     public String printJson() {
         Map<String, Number> r;
+        Object[] keySet;
+        String output = "";
         if (type.equals("text")){
             return "";
         }
         else if (type.equals("mc")){
             r = getMcq();
+            keySet = r.keySet().toArray(new String[0]);
         }else{
             r = getRanges();
+            keySet = printableRange();
         }
-        String output = "";
         for (int i=0; i<r.size(); i++) {
-            output += "{label: '"+r.keySet().toArray()[i]+"', y: "+r.get(r.keySet().toArray()[i])+"}";
+            output += "{label: '"+keySet[i].toString()+"', y: "+r.get(keySet[i].toString())+"}";
             if(i+1<r.size()){
                 output += ",";
             }
