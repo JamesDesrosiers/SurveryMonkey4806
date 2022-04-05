@@ -24,47 +24,6 @@
         }
 
     </style>
-    <script type = "text/javascript">
-        window.onload = function() {
-
-        var dps = [ [ ] ];
-        var chart = new CanvasJS.Chart("chartContainer", {
-	        exportEnabled: true,
-	        animationEnabled: true,
-	        theme: "light2", // "light1", "dark1", "dark2"
-	        title: {
-		        text: "Visitor Demographics of a Website"
-        	},
-        	subtitles: [{
-        		text: "Age Groups of Visitors"
-        	}],
-           	data: [{
-	        	type: "pie",
-	        	yValueFormatString: "#,##0\"%\"",
-	        	indexLabel: "{label} - {y}",
-	        	dataPoints: dps[0]
-        	}]
-        });
-
-        var yValue;
-        var label;
-
-        <c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">
-	        <c:forEach items="${dataPoints}" var="dataPoint">
-	        	yValue = parseFloat("${dataPoint.y}");
-	        	label = "${dataPoint.label}";
-	        	dps[parseInt("${loop.index}")].push({
-	        		label : label,
-	        		y : yValue,
-	        	});
-        	</c:forEach>
-        </c:forEach>
-        dps[0]
-
-        chart.render();
-
-        }
-    </script>
 </head>
 <body>
 <h1>
@@ -80,7 +39,7 @@
         </tr>
         <tr th:each="q: ${survey.getQuestions()}">
             <td>
-                <span style="font-size:16pt;" th:text="${q.getQuestion()}" /><br />
+                <span style="font-size:16pt;" th:text="${q.getQuestion()}"  id='qtemp' /><br />
                 <b><span th:text="${q.getType()}" /> question</b>
             </td>
             <td th:switch="${q.getType()}">
@@ -101,7 +60,6 @@
                     </ul>
                 </span>
                 <span th:case = "'mc'">
-                    Results
                     <table>
                         <tr>
                             <td>Number</td><td>Responses</td>
@@ -110,6 +68,29 @@
                             <td th:text="${ra}" />
                             <td th:text="${q.getMcq().get(ra)}" />
                         </tr>
+                            test
+                            <script>
+                                let test = document.getElementById("dataPointsList");
+                                console.log(test)
+                                window.onload = function () {
+                                var chart = new CanvasJS.Chart("chartContainer", {
+                                    data: [
+                                    {
+                                        type: "pie",
+                                        dataPoints: [
+                                            { x: 10, y: 10 },
+                                            { x: 20, y: 15 },
+                                            { x: 30, y: 25 },
+                                            { x: 40, y: 30 },
+                                            { x: 50, y: 28 }
+                                            ]
+                                    }
+                                    ]
+                                });
+
+                                    chart.render();
+                                }
+                            </script>
                     </table>
                 </span>
             </td>

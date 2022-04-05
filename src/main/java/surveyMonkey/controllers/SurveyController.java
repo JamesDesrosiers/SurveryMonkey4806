@@ -61,7 +61,7 @@ public class SurveyController {
         survey.setSurvey(query.get().get());
 
 
-        List<List<Map<Object, Object>>> canvasjsDataList = CanvasjsChartData.getCanvasjsDataList(survey);
+        List<String> canvasjsDataList = CanvasjsChartData.getCanvasjsDataList(survey);
         modelMap.addAttribute("dataPointsList", canvasjsDataList);
         return new ModelAndView("surveys");
     }

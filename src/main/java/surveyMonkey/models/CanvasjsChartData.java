@@ -43,27 +43,25 @@ public class CanvasjsChartData {
     }
 
     //TODO: UPdate format to allow multiple questions to be rendered via this!
-    public static List<List<Map<Object, Object>>> getCanvasjsDataList(Survey survey){
+    public static List<String> getCanvasjsDataList(Survey survey){
 
         //get list of questions
         List<Question> li = survey.getQuestions();
-        List<Map<Object,Object>> dataPoints1 = new ArrayList<Map<Object,Object>>();
-        List<List<Map<Object,Object>>> question= new ArrayList<List<Map<Object,Object>>>();
+        List<String> dataPoints1 = new ArrayList<String>();
+        List<String> question= null;
         List<Object> quiz = new ArrayList<Object>();
 
         for(Question q : li) {
-            if(q.getMcq() != null){
-                for(Map.Entry<String, Number> val : q.getMcq().entrySet()){
-                    map = new HashMap<Object, Object>();
-                    map.put("label", val.getKey());
-                    map.put("y", val.getValue());
-                    dataPoints1.add(map);
-                    //temp
-                    break;
+            if (q.getMcq() != null) {
+                for (Map.Entry<String, Number> val : q.getMcq().entrySet()) {
+                  dataPoints1.add(val.getKey() + "," + val.getValue());
                 }
-                question.add(dataPoints1);
-            }else if(q.getRanges() != null){
-                for(Map.Entry<String, Number> val : q.getRanges().entrySet()){
+                //temp
+                question = dataPoints1;
+                break;
+            } else if (q.getRanges() != null) {
+                continue;
+                /*for(Map.Entry<String, Number> val : q.getRanges().entrySet()){
                     map = new HashMap<Object, Object>();
                     map.put("label", val.getKey());
                     map.put("y", val.getValue());
@@ -71,13 +69,15 @@ public class CanvasjsChartData {
                     //temp
                     break;
                 }
-                question.add(dataPoints1);
+               // question.add(dataPoints1);
             }else{
-                quiz.add(q.getAnswers());
                 continue;
+               quiz.add(q.getAnswers());
+                continue;
+            */
             }
-            quiz.add(question);
         }
+
         return question;
     }
 }
