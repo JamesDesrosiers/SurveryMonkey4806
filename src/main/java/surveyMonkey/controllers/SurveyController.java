@@ -33,9 +33,10 @@ public class SurveyController {
     }
 
     @RequestMapping(value="/submit", method = RequestMethod.GET)
-    public @ResponseBody RedirectView submission(@RequestParam Map<String, String> queryParameters) throws ExecutionException, InterruptedException {
+    public @ResponseBody RedirectView submission(@RequestParam Map<String, String> queryParameters) throws Exception {
+        Firestore fs = db.getFirebase();
         Survey s = new Survey(
-            db.getFirebase().document("surveys/"+queryParameters.get("id")).get().get()
+            fs.document("surveys/"+queryParameters.get("id")).get().get()
         );
 
         for(Question q : s.getQuestions()){
@@ -49,8 +50,8 @@ public class SurveyController {
                 q.getRanges().replace(queryParameters.get(q.getQuestion()), q.getRanges().get(queryParameters.get(q.getQuestion())).intValue()+1);
             }
             ApiFuture<WriteResult> write = db.getFirebase().document("surveys/"+s.getId()).update("questions", s.getMapList());
+            write.get();
         }
-
         return new RedirectView("/");
     }
 
