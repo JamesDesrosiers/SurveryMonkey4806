@@ -25,9 +25,9 @@ public class SurveyTests {
     }
 
     @Test
-    public void OwnerIDTest(){
-        temp.setOwnerId("22");
-        assert("22".equals(temp.getOwnerId()));
+    public void OwnerEmailTest(){
+        temp.setOwnerEmail("22@g.com");
+        assert("22@g.com".equals(temp.getOwnerEmail()));
     }
 
     @Test

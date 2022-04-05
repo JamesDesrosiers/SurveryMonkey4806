@@ -32,14 +32,14 @@
 <form method="GET" action="/submit">
   <h2 th:text="${survey.getTitle()}"/>
   <input type="hidden" name="id" th:value="${survey.getId()}" />
-  <span style="color:#656565;">A survey by <span style="color:black;" th:text="${survey.getOwnerId()}" /></span><br /><br />
+  <span style="color:#656565;">A survey by <span style="color:black;" th:text="${survey.getOwnerEmail()}" /></span><br /><br />
   <div th:each="question,s: ${survey.getQuestions()}">
     <b style="font-size:15pt;" th:text="${question.getQuestion()}" /><br />
     <span style="color:#656565;">Question <span th:text="${s.index+1}" /> of <span th:text="${s.count}" /></span>
     <div th:switch="${question.getType()}">
       <span th:case="'range'">
         <select th:name="${question.getQuestion()}">
-          <option th:each="rv: ${question.getPrintableRange()}" th:text="${rv}" th:value="${rv}"></option>
+          <option th:each="rv: ${question.printableRange()}" th:text="${rv}" th:value="${rv}"></option>
         </select>
         <br /><br/>
       </span>

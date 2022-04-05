@@ -1,16 +1,23 @@
 package surveyMonkey.models;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.ArrayList;
 
-@Getter
-@Setter
 @Component
-public class User extends Model{
-    private long pass_Hash;
-    private String userId;
-    private List<Survey> surveys;
+public class User extends Model {
+    private String email;
+    private String password;
+
+    public String getEmail() { return email; }
+
+    public String getPassword() { return password; }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

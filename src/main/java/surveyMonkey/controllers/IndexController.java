@@ -1,26 +1,28 @@
 package surveyMonkey.controllers;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 import surveyMonkey.models.Question;
 import surveyMonkey.models.Survey;
+import surveyMonkey.models.User;
 import surveyMonkey.services.FirebaseInitializer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @RestController
 public class IndexController {
 
     private Survey globalSurvey;
+    private User user;
 
     @Autowired
     FirebaseInitializer db;
@@ -37,6 +39,30 @@ public class IndexController {
         }
 
         return new ModelAndView("index");
+    }
+
+    @RequestMapping("/dashboard")
+    public ModelAndView dashboardPage(@ModelAttribute("surveyList") ArrayList<Survey> surveyList, @ModelAttribute("surveyList2") ArrayList<Survey> surveyList2) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.getFirebase().collection("surveys").whereEqualTo("status", true).whereEqualTo("ownerEmail", user.getEmail()).get();
+        ApiFuture<QuerySnapshot> query2 = db.getFirebase().collection("surveys").whereEqualTo("status", false).whereEqualTo("ownerEmail", user.getEmail()).get();
+
+        QuerySnapshot qs = query.get();
+        QuerySnapshot qs2 = query2.get();
+
+        List<QueryDocumentSnapshot> documents = qs.getDocuments();
+        List<QueryDocumentSnapshot> documents2 = qs2.getDocuments();
+
+        for(QueryDocumentSnapshot document : documents){
+            Survey s = new Survey(document);
+            surveyList.add(s);
+        }
+
+        for(QueryDocumentSnapshot document : documents2){
+            Survey s = new Survey(document);
+            surveyList2.add(s);
+        }
+
+        return new ModelAndView("dashboard");
     }
 
     @RequestMapping("/create")
@@ -78,6 +104,8 @@ public class IndexController {
             case "create" :
                 globalSurvey = new Survey();
                 globalSurvey.setTitle(Name);
+                globalSurvey.setOwnerEmail(user.getEmail());
+                globalSurvey.setStatus(true);
                 model.addAttribute("survey", globalSurvey);
         }
         return new ModelAndView("create");
@@ -106,5 +134,40 @@ public class IndexController {
         CollectionReference responsesCR = db.getFirebase().collection("surveys");
         responsesCR.add(globalSurvey);
         return new ModelAndView("success");
+    }
+
+    @RequestMapping("/auth")
+    public Object signUp(String password, String email) throws ExecutionException, InterruptedException {
+        List<User> userList = getUsers();
+
+        List<User> loggedIn = userList.stream()
+                .filter(u -> email.equals(u.getEmail()))
+                .collect(Collectors.toList());
+
+        if(loggedIn.size() == 0){
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setPassword(password);
+            CollectionReference userCR = db.getFirebase().collection("users");
+            userCR.add(newUser);
+            user = newUser;
+            return new RedirectView("/dashboard");
+        } else if(loggedIn.size() == 1 && loggedIn.get(0).getPassword().equals(password)) {
+            user = loggedIn.get(0);
+            return new RedirectView("/dashboard");
+        }else {
+            return new RedirectView("/");
+        }
+    }
+
+    private List<User> getUsers() throws InterruptedException, ExecutionException {
+        List<User> userList = new ArrayList<User>();
+        CollectionReference books = db.getFirebase().collection("users");
+        ApiFuture<QuerySnapshot> querySnapshot = books.get();
+        for(DocumentSnapshot doc:querySnapshot.get().getDocuments()) {
+            User emp = Objects.requireNonNull(doc.toObject(User.class)).withId(doc.getId());
+            userList.add(emp);
+        }
+        return userList;
     }
 }

@@ -32,6 +32,13 @@ public class SurveyController {
         return new ModelAndView("survey");
     }
 
+    @RequestMapping("/status")
+    public ModelAndView statusPage(@RequestParam(value="id", required=true) String id, @ModelAttribute("survey") Survey survey) throws ExecutionException, InterruptedException {
+        DocumentReference query = db.getFirebase().document("surveys/"+id);
+        survey.setSurvey(query.get().get());
+        return new ModelAndView("status");
+    }
+
     @RequestMapping(value="/submit", method = RequestMethod.GET)
     public @ResponseBody RedirectView submission(@RequestParam Map<String, String> queryParameters) throws ExecutionException, InterruptedException {
         Survey s = new Survey(
@@ -52,6 +59,14 @@ public class SurveyController {
         }
 
         return new RedirectView("/");
+    }
+
+    @RequestMapping(value="/close", method = RequestMethod.GET)
+    public Object close(@RequestParam Map<String, String> queryParameters) throws ExecutionException, InterruptedException {
+
+        ApiFuture<WriteResult> write = db.getFirebase().document("surveys/"+queryParameters.get("id")).update("status", false);
+
+        return new RedirectView("/dashboard");
     }
 
     @RequestMapping("/surveys")
