@@ -32,18 +32,14 @@
 <div>
     <h2 th:text="${survey.getTitle()}"/>
 
-    <table>
-        <tr>
-            <td>Question</td><td>Answers</td>
-        </tr>
-        <tr th:each="q: ${survey.getQuestions()}">
-            <td>
-                <span style="font-size:16pt;" th:text="${q.getQuestion()}" /><br />
-                <b><span th:text="${q.getType()}" /> question</b>
-            </td>
-            <td th:switch="${q.getType()}">
+        <div th:each="q, it: ${survey.getQuestions()}">
+            <div>
+                <span style="font-size:16pt;" th:text="${q.getQuestion()}"  id='qtemp' /><br />
+                <b><span th:text="${q.getType()}" /> question</b><br />
+            </div>
+            <div th:switch="${q.getType()}">
                 <span th:case="'range'">
-                    <table>
+                    <!--<table>
                         <tr>
                             <td>Number</td><td>Responses</td>
                         </tr>
@@ -51,16 +47,57 @@
                             <td th:text="${ra}" />
                             <td th:text="${q.getRanges().get(ra)}" />
                         </tr>
-                    </table>
+                    </table>-->
+                    <div th:id = "${q.getQuestion()}" style="height: 370px; width: 50%;"></div>
+                    <script th:inline="text">
+                        window.addEventListener("load", function (event) {
+                        var chart[[${it.index}]] = new CanvasJS.Chart("[(${q.getQuestion()})]", {
+                            axisY: {
+                                interval: 1
+                            },
+                            data: [
+                                {
+                                    type: "column",
+                                    dataPoints: [
+                                            [(${q.printJson()})]
+                                        ]
+                                }
+                            ],
+                            backgroundColor: "rgba(255,255,255, 0.0)"
+                        });
+
+                            chart[[${it.index}]].render();
+                        });
+                    </script>
                 </span>
                 <span th:case="'text'">
                     <ul th:each="ta: ${q.getAnswers()}">
                         <li th:text="${ta}" />
                     </ul>
                 </span>
-            </td>
-        </tr>
-    </table>
+                <span th:case = "'mc'">
+                    <div th:id = "${q.getQuestion()}" style="height: 370px; width: 50%;"></div>
+                    <script th:inline="text">
+                        window.addEventListener("load", function (event) {
+                        var chart[[${it.index}]] = new CanvasJS.Chart("[(${q.getQuestion()})]", {
+                            data: [
+                            {
+                                type: "pie",
+                                dataPoints: [
+                                    [(${q.printJson()})]
+                                    ]
+                            }
+                            ],
+                            backgroundColor: "rgba(255,255,255, 0.0)"
+                        });
+
+                            chart[[${it.index}]].render();
+                        });
+                    </script>
+                </span>
+            </div><br /><hr /><br />
+        </div>
 </div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>

@@ -2,18 +2,16 @@ package surveyMonkey.controllers;
 
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.google.firestore.v1.Write;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import surveyMonkey.models.CanvasjsChartData;
 import org.springframework.web.servlet.view.RedirectView;
 import surveyMonkey.models.Question;
-import surveyMonkey.models.Response;
 import surveyMonkey.models.Survey;
 import surveyMonkey.services.FirebaseInitializer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -70,11 +68,20 @@ public class SurveyController {
     }
 
     @RequestMapping("/surveys")
-    public ModelAndView resultsPage(@RequestParam(value="id", required=true) String id, @ModelAttribute("survey") Survey survey) throws ExecutionException, InterruptedException {
+    public ModelAndView resultsPage(@RequestParam(value="id", required=true) String id, @ModelAttribute("survey") Survey survey, ModelMap modelMap) throws ExecutionException, InterruptedException {
         DocumentReference query = db.getFirebase().document("surveys/"+id);
 
         survey.setSurvey(query.get().get());
+
+        List<String> canvasjsDataList = CanvasjsChartData.getCanvasjsDataList(survey);
+        modelMap.addAttribute("dataPointsList", canvasjsDataList);
         return new ModelAndView("surveys");
     }
 
+    @RequestMapping(value = "/datapoints")
+    public @ResponseBody Object postDatapoints(ModelMap modelMap) {
+        return modelMap.getAttribute("dataPointsList");
+    }
 }
+
+
