@@ -34,7 +34,7 @@
   <input type="hidden" name="id" th:value="${survey.getId()}" />
   <span style="color:#656565;">A survey by <span style="color:black;" th:text="${survey.getOwnerEmail()}" />
     <div th:each="question,s: ${survey.getQuestions()}">
-      <b style="font-size:15pt;" th:text="${question.getQuestion()}" /><br />
+      <b style="font-size:15pt;" th:text="${question.getQuestion()}" />
       <b style="font-size:15pt;" th:text="${question.getType()}" /><br />
   </div>
   </span><br /><br />

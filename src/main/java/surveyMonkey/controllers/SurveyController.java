@@ -52,11 +52,8 @@ public class SurveyController {
 
     @RequestMapping(value="/close", method = RequestMethod.GET)
     public Object close(@RequestParam Map<String, String> queryParameters) throws ExecutionException, InterruptedException {
-        Survey s = new Survey(
-                db.getFirebase().document("surveys/"+queryParameters.get("id")).get().get()
-        );
 
-        //System.out.println(s.getQuestions());
+        ApiFuture<WriteResult> write = db.getFirebase().document("surveys/"+queryParameters.get("id")).update("status", false);
 
         return new RedirectView("/dashboard");
     }
