@@ -71,4 +71,19 @@ public class Survey extends Model{
     public void setOwnerEmail(String ownerEmail) {
         this.ownerEmail = ownerEmail;
     }
+
+    public ArrayList<HashMap<String, Object>> getMapList() {
+        ArrayList<HashMap<String, Object>> l = new ArrayList();
+        for(Question q : getQuestions()){
+            HashMap<String, Object> m = new HashMap();
+            m.put("id", null);
+            m.put("question", q.getQuestion());
+            m.put("type", q.getType());
+            m.put("mcq", q.getMcq());
+            m.put("answers", q.getAnswers());
+            m.put("ranges", q.getRanges());
+            l.add(m);
+        }
+        return l;
+    }
 }
