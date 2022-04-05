@@ -35,7 +35,6 @@ public class SurveyController {
     @RequestMapping("/status")
     public ModelAndView statusPage(@RequestParam(value="id", required=true) String id, @ModelAttribute("survey") Survey survey) throws ExecutionException, InterruptedException {
         DocumentReference query = db.getFirebase().document("surveys/"+id);
-
         survey.setSurvey(query.get().get());
         return new ModelAndView("status");
     }

@@ -38,7 +38,12 @@
       <b style="font-size:15pt;" th:text="${question.getType()}" /><br />
   </div>
   </span><br /><br />
+  Survey Link<br />
+  <a th:href="'/surveys?id='+${survey.getId()}" th:text="'https://sysc4806-11.herokuapp.com/surveys?id='+${survey.getId()}"></a><br /><br />
   <input type="submit" value="Close" />
+</form><br /><br />
+<form method="GET" action="/dashboard">
+  <input type="submit" value="Back to Dashboard" />
 </form>
 </body>
 </html>

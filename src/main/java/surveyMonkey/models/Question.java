@@ -41,7 +41,7 @@ public class Question extends Model {
         }
     }
 
-    public Integer[] getPrintableRange() {
+    public Integer[] printableRange() {
         Integer[] pr = new Integer[ranges.size()];
         for(int i=0; i<=max-min; i++){
             pr[i] = i+min;
