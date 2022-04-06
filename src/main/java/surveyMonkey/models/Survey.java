@@ -1,6 +1,5 @@
 package surveyMonkey.models;
 import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.common.collect.ArrayListMultimap;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -72,7 +71,7 @@ public class Survey extends Model{
         this.ownerEmail = ownerEmail;
     }
 
-    public ArrayList<HashMap<String, Object>> getMapList() {
+    public ArrayList<HashMap<String, Object>> mapList() {
         ArrayList<HashMap<String, Object>> l = new ArrayList();
         for(Question q : getQuestions()){
             HashMap<String, Object> m = new HashMap();

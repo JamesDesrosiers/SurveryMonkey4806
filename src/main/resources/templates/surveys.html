@@ -40,14 +40,15 @@
             <div th:switch="${q.getType()}">
                 <span th:case="'range'">
                     <div th:id = "${q.getQuestion()}" style="height: 370px; width: 50%;"></div>
-                    <script th:inline="text">
+                    <script th:inline="text" th:with="xInt=${T(java.lang.Math).max(1,q.getRanges().size()/20)},
+                    yInt=${T(java.lang.Math).max(1,T(java.util.Collections).max(q.getRanges().values.toArray()).intValue()/16)}">
                         window.addEventListener("load", function (event) {
                         var chart[[${it.index}]] = new CanvasJS.Chart("[(${q.getQuestion()})]", {
                             axisY: {
-                                interval: 1
+                                interval: [[${yInt}]]
                             },
                             axisX: {
-                                interval: 1
+                                interval: [[${xInt}]]
                             },
                             data: [
                                 {

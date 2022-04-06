@@ -54,7 +54,7 @@ public class SurveyController {
                 q.getRanges().replace(queryParameters.get(q.getQuestion()), q.getRanges().get(queryParameters.get(q.getQuestion())).intValue()+1);
             }
         }
-        ApiFuture<WriteResult> write = db.getFirebase().document("surveys/"+s.getId()).update("questions", s.getMapList());
+        ApiFuture<WriteResult> write = db.getFirebase().document("surveys/"+s.getId()).update("questions", s.mapList());
         write.get();
 
         return new RedirectView("/");
