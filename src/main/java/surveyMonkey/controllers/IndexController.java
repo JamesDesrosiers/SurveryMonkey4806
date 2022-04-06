@@ -28,7 +28,7 @@ public class IndexController {
     FirebaseInitializer db;
 
     @RequestMapping("/")
-    public ModelAndView mainPage(@ModelAttribute("surveyList") ArrayList<Survey> surveyList) throws ExecutionException, InterruptedException {
+    public ModelAndView mainPage(@ModelAttribute("surveyList") ArrayList<Survey> surveyList, @ModelAttribute("surveyList2") ArrayList<Survey> surveyList2) throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.getFirebase().collection("surveys").whereEqualTo("status", true).get();
         QuerySnapshot qs = query.get();
 
@@ -37,30 +37,43 @@ public class IndexController {
             Survey s = new Survey(document);
             surveyList.add(s);
         }
+        ApiFuture<QuerySnapshot> query2 = db.getFirebase().collection("surveys").whereEqualTo("status", false).get();
+        QuerySnapshot qs2 = query2.get();
+        List<QueryDocumentSnapshot> documents2 = qs2.getDocuments();
+        for(QueryDocumentSnapshot document : documents2){
+            Survey s = new Survey(document);
+            surveyList2.add(s);
+        }
 
         return new ModelAndView("index");
     }
 
     @RequestMapping("/dashboard")
-    public ModelAndView dashboardPage(@ModelAttribute("surveyList") ArrayList<Survey> surveyList, @ModelAttribute("surveyList2") ArrayList<Survey> surveyList2) throws ExecutionException, InterruptedException {
+    public ModelAndView dashboardPage(@ModelAttribute("surveyList") ArrayList<Survey> surveyList,
+                                      @ModelAttribute("surveyList2") ArrayList<Survey> surveyList2,
+                                      @ModelAttribute("authUser") String authed,
+                                      Model model) throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.getFirebase().collection("surveys").whereEqualTo("status", true).whereEqualTo("ownerEmail", user.getEmail()).get();
-        ApiFuture<QuerySnapshot> query2 = db.getFirebase().collection("surveys").whereEqualTo("status", false).whereEqualTo("ownerEmail", user.getEmail()).get();
 
         QuerySnapshot qs = query.get();
-        QuerySnapshot qs2 = query2.get();
 
         List<QueryDocumentSnapshot> documents = qs.getDocuments();
-        List<QueryDocumentSnapshot> documents2 = qs2.getDocuments();
 
         for(QueryDocumentSnapshot document : documents){
             Survey s = new Survey(document);
             surveyList.add(s);
         }
 
+        ApiFuture<QuerySnapshot> query2 = db.getFirebase().collection("surveys").whereEqualTo("status", false).whereEqualTo("ownerEmail", user.getEmail()).get();
+        QuerySnapshot qs2 = query2.get();
+        List<QueryDocumentSnapshot> documents2 = qs2.getDocuments();
         for(QueryDocumentSnapshot document : documents2){
             Survey s = new Survey(document);
             surveyList2.add(s);
         }
+
+        authed = user.getEmail();
+        model.addAttribute("authUser", authed);
 
         return new ModelAndView("dashboard");
     }

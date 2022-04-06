@@ -44,12 +44,12 @@
         <br /><br/>
       </span>
       <span th:case="'text'">
-        <input type="text" th:name="${question.getQuestion()}" />
+        <input type="text" th:name="${question.getQuestion()}" required />
         <br /><br/>
       </span>
       <span th:case="'mc'">
         <span th:each="mc: ${question.getMcq().keySet()}">
-          <input type="radio" th:name="${question.getQuestion()}" th:value="${mc}" /> <label th:for="${mc}" th:text="${mc}" />
+          <input type="radio" th:name="${question.getQuestion()}" th:value="${mc}" required/> <label th:for="${mc}" th:text="${mc}" />
           <br/>
         </span><br/>
       </span>
@@ -57,5 +57,7 @@
   </div>
   <input type="submit" value="Submit" />
 </form>
+
+<button onclick = "history.back()">Return to Previous Screen</button>
 </body>
 </html>
