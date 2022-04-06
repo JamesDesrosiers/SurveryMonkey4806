@@ -49,7 +49,10 @@ public class IndexController {
     }
 
     @RequestMapping("/dashboard")
-    public ModelAndView dashboardPage(@ModelAttribute("surveyList") ArrayList<Survey> surveyList, @ModelAttribute("surveyList2") ArrayList<Survey> surveyList2) throws ExecutionException, InterruptedException {
+    public ModelAndView dashboardPage(@ModelAttribute("surveyList") ArrayList<Survey> surveyList,
+                                      @ModelAttribute("surveyList2") ArrayList<Survey> surveyList2,
+                                      @ModelAttribute("authUser") String authed,
+                                      Model model) throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.getFirebase().collection("surveys").whereEqualTo("status", true).whereEqualTo("ownerEmail", user.getEmail()).get();
 
         QuerySnapshot qs = query.get();
@@ -68,6 +71,9 @@ public class IndexController {
             Survey s = new Survey(document);
             surveyList2.add(s);
         }
+
+        authed = user.getEmail();
+        model.addAttribute("authUser", authed);
 
         return new ModelAndView("dashboard");
     }

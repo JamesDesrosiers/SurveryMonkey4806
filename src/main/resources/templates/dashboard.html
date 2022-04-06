@@ -23,12 +23,14 @@
     Survey Monkey
 </h1>
 <div>
+    <H2 id="NAME">TEMP</H2>
+    <script>
+        let name = "[[${authUser}]]"
+        document.getElementById("NAME").innerHTML = "Welcome Back, " + name;
+    </script>
     <form action="/" method="post">
         <input type="submit" value="Go back to main page"/>
     </form>
-    <form action="/surveys" method="get" style="float: left">
-        <input type="submit" value="View Survey Results"/>
-    </form><br />
     <h3>Open Surveys</h3>
     <div th:each="s: ${surveyList}">
         <form action="/status" method="get" style="float: left">
